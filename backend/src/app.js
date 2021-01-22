@@ -8,7 +8,9 @@ const PORT = process.env.PORT || 3050;
 const app = express();
 app.use(cors());
 
+app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
+
 
 app.use(require('./routes/usuario'));
 
