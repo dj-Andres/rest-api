@@ -37,18 +37,27 @@ route.get('/', (req, res) => {
   
   route.post('/add', (req, res) => {
     const sql = 'INSERT INTO usuario SET ?';
-  
     const customerObj = {
       documento: req.body.documento,
       nombres: req.body.nombres,
       email: req.body.email,
       celular: req.body.celular,
     };
-  
-    connection.query(sql, customerObj, error => {
-      if (error) throw error;
-      res.send('Customer created!');
-    });
+    const { email } = req.body;
+    const validation=`SELECT * FROM usuario WHERE eamil = ${email}`;
+
+    connection.query(validation,error,rows => {
+        if(rows.length > 0){
+            res.json({
+              message:"El usuario ya se encuentra registrado intentar con otro"
+            })
+        }else{
+          connection.query(sql, customerObj, error => {
+            if (error) throw error;
+            res.send('Customer created!');
+          });
+        }
+    })
   });
   
   route.put('/update/:id', (req, res) => {
