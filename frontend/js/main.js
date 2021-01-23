@@ -1,4 +1,4 @@
-const contenido = document.querySelector('#tabla')
+const contenido = document.querySelector('#usuarios')
 
 document.addEventListener("DOMContentLoaded",function(){
     console.log("DOM fully loaded and parsed");
@@ -26,13 +26,61 @@ const table = (data) =>{
     for (let item of data ){
         //console.log(item);
         elementos+=`
-            <tr>
-                <th>${item.id}</th>
-                <th>${item.documento}</th>
-                <th>${item.nombres}</th>
-                <th>${item.email}</th>
-                <th>${item.celular}</th>
-            </tr>
+            <div usuarioid="${item.id}" class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">
+                            <div class="card bg-light">
+                                <div class="card-header text-muted border-bottom-0">
+                                    <font style="vertical-align: inherit;">
+                                        <font style="vertical-align: inherit;">
+                                            <h1 class="badge badge-success">Datos del Usuario</h1>
+                                        </font>
+                                    </font>
+                                </div>
+                                <div class="card-body pt-1 mb-1">
+                                    <div class="row">
+                                        <div class="col-7">
+                                            <p class="text-muted text-sm"><b>
+                                                    <font style="vertical-align: inherit;">
+                                                        <font style="vertical-align: inherit;">Acerca de:</font>
+                                                    </font>
+                                                </b>
+                                                <font style="vertical-align: inherit;">
+                                                    <font style="vertical-align: inherit;"></font>
+                                                </font>
+                                            </p>
+                                            <ul class="ml-4 mb-0 fa-ul text-muted">
+                                                <li class="small"><span class="fa-li"><i class="fas fa-lg fa-id-card"></i></span>
+                                                    <font style="vertical-align: inherit;">
+                                                        <font style="vertical-align: inherit;"> Documento: ${item.documento}</font>
+                                                    </font>
+                                                </li>
+                                                <li class="small"><span class="fa-li"><i class="fas fa-lg fa-birthday-cake"></i></span>
+                                                    <font style="vertical-align: inherit;">
+                                                        <font style="vertical-align: inherit;"> Nombres: ${item.nombres}</font>
+                                                    </font>
+                                                </li>
+                                                <li class="small"><span class="fa-li"><i class="fas fa-lg fa-at"></i></span>
+                                                    <font style="vertical-align: inherit;">
+                                                        <font style="vertical-align: inherit;"> Correo: ${item.email}</font>
+                                                    </font>
+                                                </li>
+                                                <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span>
+                                                    <font style="vertical-align: inherit;">
+                                                        <font style="vertical-align: inherit;"> Teléfono: ${item.celular}</font>
+                                                    </font>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="card-footer">
+                                            <div class="text-right">
+                                                <button class="ascender btn btn-success ml-1" type="button" data-toggle="modal" data-target="#confirmar">
+                                                    <i class="fas fa-angle-double-up mr-1"></i>Ascender
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>  
         `
     }
 
@@ -40,32 +88,37 @@ const table = (data) =>{
 }
 
 const formulario = document.getElementById('formulario');
-
+const mensajesFormulario = document.getElementById('mensaje');
 document.addEventListener('submit',async e=>{
     console.log(formulario);
     if(e.target===formulario){
         e.preventDefault();
-        
-        try {
-            let res = await fetch('http://localhost:3050/add',{
-                method:"POST",
-                headers:{
-                    "Content-Type":"application/json; charset=utf-8"
-                },
-                body:JSON.stringify({
-                    documento:e.target.documento.value,
-                    nombres:e.target.nombres.value,
-                    email:e.target.email.value,
-                    celular:e.target.celular.value
-                })
-            }),
-            json= await res.json();
-            if(!res.ok) throw { status: res.status,statusText: res.statusText };
-            console.log(json);
 
-        } catch (err) {
-            let message = err.statusText ||"Ocurrio un error";
-            console.log(err);         
+        if(e.target.documento.value  == '' || e.target.nombres.value || e.target.email.value  || e.target.celular.value){
+            //alert('campos vacios por favor llenarlos');
+            mensajesFormulario.style.display='flex';
+        }else{
+            try {
+                let res = await fetch('http://localhost:3050/add',{
+                    method:"POST",
+                    headers:{
+                        "Content-Type":"application/json; charset=utf-8"
+                    },
+                    body:JSON.stringify({
+                        documento:e.target.documento.value,
+                        nombres:e.target.nombres.value,
+                        email:e.target.email.value,
+                        celular:e.target.celular.value
+                    })
+                }),
+                json= await res.json();
+                if(!res.ok) throw { status: res.status,statusText: res.statusText };
+                console.log(json);
+                getAll();
+            } catch (err) {
+                let message = err.statusText ||"Ocurrio un error";
+                console.log(err);         
+            }   
         }
     }
 });
