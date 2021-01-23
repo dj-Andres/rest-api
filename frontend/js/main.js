@@ -72,7 +72,7 @@ const table = (data) =>{
                                         </div>
                                         <div class="card-footer">
                                             <div class="text-right">
-                                                <button class="ascender btn btn-success ml-1" type="button" data-toggle="modal" data-target="#confirmar">
+                                                <button class="subir btn btn-success ml-1" type="button" data-toggle="modal" data-target="#recarga">
                                                     <i class="fas fa-angle-double-up mr-1"></i>Ascender
                                                 </button>
                                             </div>
@@ -90,12 +90,11 @@ const table = (data) =>{
 const formulario = document.getElementById('formulario');
 const mensajesFormulario = document.getElementById('mensaje');
 document.addEventListener('submit',async e=>{
-    console.log(formulario);
+    //console.log(formulario);
     if(e.target===formulario){
         e.preventDefault();
 
         if(e.target.documento.value  == '' || e.target.nombres.value || e.target.email.value  || e.target.celular.value){
-            //alert('campos vacios por favor llenarlos');
             mensajesFormulario.style.display='flex';
         }else{
             try {
@@ -121,4 +120,37 @@ document.addEventListener('submit',async e=>{
             }   
         }
     }
+});
+const subir = document.getElementsByClassName('subir');
+
+const recarga = document.getElementById('formulario-recarga');
+const mensaje_recarga=document.getElementById('mensaje_saldo');
+recarga.addEventListener('submit', async e=>{
+    if(e.target===recarga){
+        e.preventDefault();
+        /*if(e.target.documento.value  == ''  || e.target.celular.value || e.target.recarga.value== ''){
+            mensaje_recarga.style.display='flex';
+        }else{*/
+            try {
+                let res = await fetch('http://localhost:3050/recharge',{
+                    method:"POST",
+                    headers:{
+                        "Content-Type":"application/json; charset=utf-8"
+                    },
+                    body:JSON.stringify({
+                        documento:e.target.documento.value,
+                        celular:e.target.celular.value,
+                        valor:e.target.valor.value
+                    })
+                }),
+                json= await res.json();
+                if(!res.ok) throw { status: res.status,statusText: res.statusText };
+                console.log(json);
+                getAll();
+            } catch (err) {
+                let message = err.statusText ||"Ocurrio un error";
+                console.log(err);         
+            }   
+        //}
+    } 
 });

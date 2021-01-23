@@ -35,6 +35,20 @@ route.get('/', (req, res) => {
     });
   });
   
+  route.get('/recharge/:documento/:celular',(req,res)=>{
+      const { documento , celular } = req.params;
+      const sql =`SELECT valor FROM wallet WHERE documento = ${documento} AND celular =${celular}`;
+      connection.query(sql,(error,result)=>{
+        if (error) throw error;
+        if(result.length > 0){
+          res.json(result);
+        } else {
+          res.send('Not result');
+        }
+      });
+
+  });
+
   route.post('/add', (req, res) => {
     const sql = 'INSERT INTO usuario SET ?';
     const customerObj = {
@@ -59,7 +73,24 @@ route.get('/', (req, res) => {
         }
     })
   });
-  
+
+  route.post('/recharge',(req,res)=>{
+    const sql = 'INSERT INTO wallet SET ?';
+    const walletObj = {
+      documento: req.body.documento,
+      celular: req.body.celular,
+      valor:req.body.valor
+    };
+    connection.query(sql,walletObj,(err,rows,fields)=>{
+        if(!err){
+          res.json({
+            message:"exito"
+          })
+        }else{
+          console.log(err);
+        }
+    });
+  });
   route.put('/update/:id', (req, res) => {
     const { id } = req.params;
     const { documento, nombres, email, celular } = req.body;
@@ -80,5 +111,4 @@ route.get('/', (req, res) => {
       res.send('Delete customer');
     });
   });
-
   module.exports = route;
