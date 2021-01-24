@@ -10,7 +10,7 @@ const getAll = async ()=>{
         let res = await fetch('http://localhost:3050/usuario'),
         data= await res.json();
         if(!res.ok) throw { status: res.status,statusText: res.statusText };
-        console.log(data);
+        //console.log(data);
         table(data);
 
     } catch (err) {
@@ -75,6 +75,9 @@ const table = (data) =>{
                                                 <button class="subir btn btn-success ml-1" type="button" data-toggle="modal" data-target="#recarga">
                                                     <i class="fas fa-angle-double-up mr-1"></i>Ascender
                                                 </button>
+                                                <button class="btn btn-warning ml-1" type="button" data-toggle="modal" data-target="#saldo">
+                                                    <i class="fas fa-angle-double-up mr-1"></i>Saldo
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -121,16 +124,11 @@ document.addEventListener('submit',async e=>{
         }
     }
 });
-const subir = document.getElementsByClassName('subir');
-
 const recarga = document.getElementById('formulario-recarga');
 const mensaje_recarga=document.getElementById('mensaje_saldo');
 recarga.addEventListener('submit', async e=>{
     if(e.target===recarga){
         e.preventDefault();
-        /*if(e.target.documento.value  == ''  || e.target.celular.value || e.target.recarga.value== ''){
-            mensaje_recarga.style.display='flex';
-        }else{*/
             try {
                 let res = await fetch('http://localhost:3050/recharge',{
                     method:"POST",
@@ -153,4 +151,48 @@ recarga.addEventListener('submit', async e=>{
             }   
         //}
     } 
+});
+
+const correo=document.getElementById('formulario-compra');
+correo.addEventListener('submit',async(e)=>{
+    if (e.target===correo) {
+        e.preventDefault();
+
+        try {
+            let res = await fetch('http://localhost:3050/compra',{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json; charset=utf-8"
+                },
+                body:JSON.stringify({
+                    email:e.target.email.value
+                })
+            }),
+            json= await res.json();
+            if(!res.ok) throw { status: res.status,statusText: res.statusText };
+            console.log(json);
+            getAll();
+        } catch (err) {
+            let message = err.statusText ||"Ocurrio un error";
+            console.log(err);         
+        }   
+    }    
+});
+
+const saldo=document.getElementById('formulario-comsulta');
+saldo.addEventListener('submit',async(e)=>{
+    if (e.target===saldo) {
+        e.preventDefault();
+
+        try {
+            let res = await fetch(`http://localhost:3050/recharge/${e.target.documento.value}/${e.target.celular.value}`),
+            json= await res.json();
+            if(!res.ok) throw { status: res.status,statusText: res.statusText };
+            console.log(json);
+            //getAll();
+        } catch (err) {
+            let message = err.statusText ||"Ocurrio un error";
+            console.log(err);         
+        }   
+    }    
 });
