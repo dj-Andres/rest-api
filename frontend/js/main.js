@@ -130,7 +130,7 @@ recarga.addEventListener('submit', async e=>{
     if(e.target===recarga){
         e.preventDefault();
             try {
-                let res = await fetch('http://localhost:3050/recharge',{
+                let res = await fetch('http://localhost:3050/saldo',{
                     method:"POST",
                     headers:{
                         "Content-Type":"application/json; charset=utf-8"

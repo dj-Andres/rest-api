@@ -60,21 +60,12 @@ route.get('/', (req, res) => {
       email: req.body.email,
       celular: req.body.celular,
     };
-    const { email } = req.body;
-    const validation=`SELECT * FROM usuario WHERE eamil = ${email}`;
-
-    connection.query(validation,error,rows => {
-        if(rows.length > 0){
-            res.json({
-              message:"El usuario ya se encuentra registrado intentar con otro"
-            })
-        }else{
-          connection.query(sql, customerObj, error => {
-            if (error) throw error;
-            res.send('Customer created!');
-          });
-        }
-    })
+    
+    connection.query(sql, customerObj, error => {
+      if (error) throw error;
+      res.send('Customer created!');
+    });
+    
   });
   route.put('/update/:id', (req, res) => {
     const { id } = req.params;
@@ -137,8 +128,8 @@ route.post('/compra',(req, res) => {
     port: 465,
     secure: true,
     auth: {
-      user: 'diegoandresjimenezponce96@gmail.com',
-      pass: '619andres'
+      user: process.env.USER,
+      pass: process.env.CLAVE,
     }
   });
 
@@ -156,7 +147,7 @@ route.post('/compra',(req, res) => {
   res.send('Send Email');
 
 });
-route.get('/pago/:id_session/:token',(req,res)=>{
+route.get('/verificar-pago/:id_session/:token',(req,res)=>{
     const { id_session } = req.params;
     const { token } = req.params;
 });
