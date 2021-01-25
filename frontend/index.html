@@ -1,185 +1,246 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Billetera</title>
-    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.0.2/dist/sweetalert2.min.css">  
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
-    <style>
-        #app{
-            background-color:#CFD8DC;      
-        }
-        </style>
+    <title>Epayco</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/fontawesome-free/css/all.min.css">
+    <link rel="shortcut icon" href="img/icono.jpg" type="image/x-icon">
 </head>
+
 <body>
-    <div id="app">
-        <v-app>
-            <v-main>
-                <v-card class="mx-auto mt-5" color="transparent" max-width="1280" elevation="0">
-                    <v-btn class="mx-2" fab dark color="#E040FB" @click="formNuevo()"><v-icon dark>mdi-plus</v-icon></v-btn>
-                    <v-simple-table class="mt-5">
-                        <template v-solf:default>
-                            <thead>
-                                <tr class="purple darken-2">
-                                    <th class="white--text">ID</th>
-                                    <th class="white--text">DOCUMENTO</th>
-                                    <th class="white--text">NOMBRES</th>
-                                    <th class="white--text">EMAIL</th>
-                                    <th class="white--text">CELULAR</th>
-                                    <th class="white--text text-center">ACCIONES</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="usuario in usuarios" :key="usuario.id">
-                                <td>{{ usuario.id }}</td>
-                                <td>{{ usuario.documento }}</td>
-                                <td>{{ usuario.nombres }}</td>
-                                <td>{{ usuario.email }}</td>
-                                <td>{{ usuario.celular }}</td>
-                                <td>
-                                    <v-btn class="pink" dark small fab  @click="formEditar(articulo.id, articulo.descripcion, articulo.precio, articulo.stock)"><v-icon>mdi-pencil</v-icon></v-btn>
-                                    <v-btn class="error" fab dark small @click="borrar(articulo.id)"><v-icon>mdi-delete</v-icon></v-btn>
-                                </td>
-                                </tr>
-                            </tbody>
-                        </template>
-                    </v-simple-table>
-                </v-card>
-                <!---componente de crear y editar--->
-                <v-dialog v-model="dialog" max-width="500">
-                    <v-card>
-                        <v-card-title class="purple darken-4 white--text">Usuario</v-card-title>
-                        <v-card-text>
-                            <v-container>
-                                <v-form>
-                                    <v-row>
-                                        <input v-model="usuario.id" hidden></input>
-                                        <v-col cols="12" md="4">
-                                            <v-text-field v-model="usuario.documento" label="Documento" type="text" solo required></v-text-field>
-                                        </v-col>
-                                    </v-row>
-                                </v-form>
-                            </v-container>
-                        </v-card-text>
-                    </v-card>
-                </v-dialog>
-            </v-main>
-        </v-app>
+    <!---Modal para crear usuario-->
+    <div class="modal fade" id="crear-usuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="card card-success">
+                    <div class="card-header">
+                        <h3 class="card-title">Crear Usuario</h3>
+                        <button class="close" data-dismiss="modal" aria-label="close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <!--ALERTAS-->
+                        <div class="alert alert-success text-center" id="crear" style="display:none;">
+                            <span><i class="fas fa-check m-1"></i>Se creo exitosamento el usuario</span>
+                        </div>
+                        <div class="alert alert-danger text-center" id="mensaje" style="display:none;">
+                            <span><i class="fas fa-times m-1"></i>Llenar todos los campos requeridos por favor !!</span>
+                        </div>
+                        <!--FIN-ALERTAS-->
+                        <form id="formulario">
+                            <div class="form-group">
+                                <label for="documento">Documento</label>
+                                <input type="text" name="documento" id="documento" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="nombres">Nombres</label>
+                                <input type="text" name="nombres" id="nombres" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label form="email">Email</label>
+                                <input type="email" name="email" id="email" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="celular">Celular</label>
+                                <input type="text" name="celular" id="celular" class="form-control">
+                            </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary float-rigth m-1" type="submit" name="Guardar"
+                            id="guardar">Guardar</button>
+                        <button class="btn btn-success float-rigth m-1" type="button"
+                            data-dismiss="modal">Close</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <!---Final de modal de crear usuarios-->
+    <!--modal de recarga-->
+    <div class="modal fade" id="recarga" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="card card-success">
+                    <div class="card-header">
+                        <h3 class="card-title">Recarga de Billetera</h3>
+                        <button class="close" data-dismiss="modal" aria-label="close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <!--ALERTAS-->
+                        <div class="alert alert-success text-center" id="crear" style="display:none;">
+                            <span><i class="fas fa-check m-1"></i>Se creo exitosamento el usuario</span>
+                        </div>
+                        <div class="alert alert-danger text-center" id="mensaje_saldo" style="display:none;">
+                            <span><i class="fas fa-times m-1"></i>Llenar todos los campos requeridos por favor !!</span>
+                        </div>
+                        <!--FIN-ALERTAS-->
+                        <form id="formulario-recarga">
+                            <div class="form-group">
+                                <label for="documento">Documento</label>
+                                <input type="text" name="documento" id="documento" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="celular">Celular</label>
+                                <input type="text" name="celular" id="celular" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="valor">Valor de Recarga</label>
+                                <input type="number" name="valor" id="valor" class="form-control">
+                            </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary float-rigth m-1" type="submit" name="Guardar"
+                            id="guardar">Guardar</button>
+                        <button class="btn btn-success float-rigth m-1" type="button"
+                            data-dismiss="modal">Close</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--final de modal de recarga-->
+    <!---Model de confirmar compra-->
+    <div class="modal fade" id="compra" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="card card-success">
+                    <div class="card-header">
+                        <h3 class="card-title">Confirmar Compra</h3>
+                        <button class="close" data-dismiss="modal" aria-label="close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <!--ALERTAS-->
+                        <div class="alert alert-success text-center" id="crear" style="display:none;">
+                            <span><i class="fas fa-check m-1"></i>Se creo exitosamento el usuario</span>
+                        </div>
+                        <div class="alert alert-danger text-center" id="mensaje_saldo" style="display:none;">
+                            <span><i class="fas fa-times m-1"></i>Llenar todos los campos requeridos por favor !!</span>
+                        </div>
+                        <!--FIN-ALERTAS-->
+                        <form id="formulario-compra">
+                            <div class="form-group">
+                                <label for="email">Correo Electronico</label>
+                                <input type="email" name="email" id="email" class="form-control">
+                            </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary float-rigth m-1" type="submit" name="Guardar"
+                            id="guardar">Guardar</button>
+                        <button class="btn btn-success float-rigth m-1" type="button"
+                            data-dismiss="modal">Close</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!---fin de compra-->
+    <!--consultar saldo--->
+    <div class="modal fade" id="saldo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="card card-success">
+                    <div class="card-header">
+                        <h3 class="card-title">Consultar Saldo</h3>
+                        <button class="close" data-dismiss="modal" aria-label="close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <!--ALERTAS-->
+                        <div class="alert alert-success text-center" id="crear" style="display:none;">
+                            <span><i class="fas fa-check m-1"></i>Se creo exitosamento el usuario</span>
+                        </div>
+                        <div class="alert alert-danger text-center" id="mensaje_saldo" style="display:none;">
+                            <span><i class="fas fa-times m-1"></i>Llenar todos los campos requeridos por favor !!</span>
+                        </div>
+                        <!--FIN-ALERTAS-->
+                        <form id="formulario-comsulta">
+                            <div class="form-group">
+                                <label for="documento">Documeento</label>
+                                <input type="text" name="documento" id="documento" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="celular">Celular</label>
+                                <input type="text" name="celular" id="celular" class="form-control">
+                            </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary float-rigth m-1" type="submit" name="Guardar"
+                            id="guardar">Guardar</button>
+                        <button class="btn btn-success float-rigth m-1" type="button"
+                            data-dismiss="modal">Close</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!---fin de consultar saldo-->
+    <header>
+        <div class="container">
+            <div class="row align-items-stretch justify-content-between">
+                <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+                    <a class="navbar-brand" href="#">Epayco</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+                        aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarCollapse">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item dropdown">
+                                <img src="img/icono.jpg" class="nav-link dropdown-toggle img-fluid" height="70px"
+                                    width="70px" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false"></img>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <section>
+        <div class="container-fluid px-3 py-3 pt-md-5 pb-md-4 my-4 mx-auto">
+            <div class="card card-success">
+                <div class="card-header">
+                    <h3 class="card-title">Información de Usuarios</h3>
+                    <div class="input-group">
+                        <button type="button" data-toggle="modal" data-target="#crear-usuario"
+                            class="btn 	btn-outline-primary ml-2">Crear Usuario
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="usuarios" class="row d-flex align-items-stretch">
 
+                    </div>
+                </div>
+                <div class="card-footer">
 
+                </div>
+            </div>
+        </div>
+    </section>
 
-
-
-
-
-
-
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.js" integrity="sha512-nqIFZC8560+CqHgXKez61MI0f9XSTKLkm0zFVm/99Wt0jSTZ7yeeYwbzyl0SGn/s8Mulbdw+ScCG41hmO2+FKw==" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.0.2/dist/sweetalert2.all.min.js"></script>
-    <script>
-        let url = 'http://localhost:3050/usuario/';
-    new Vue({
-      el: '#app',
-      vuetify: new Vuetify(),
-       data() {
-        return {            
-            usuarios: [],
-            dialog: false,
-            operacion: '',            
-            articulo:{
-                id: null,
-                documento:'',
-                nombres:'',
-                email:'',
-                celular:''
-            }          
-        }
-       },
-       created(){               
-            this.mostrar()
-       },  
-       methods:{          
-            //MÉTODOS PARA EL CRUD
-            mostrar:function(){
-              axios.get(url)
-              .then(response =>{
-                this.usuarios = response.data;                   
-              })
-            },
-            crear:function(){
-                let parametros = {ducumento:this.usuario.documento, nombres:this.usuario.precio,email:this.usuario.email,celular:this.usuario.celular };                
-                axios.post(url, parametros)
-                .then(response =>{
-                  this.mostrar();
-                });     
-                this.usuario.documento="";
-                this.usuario.nombres="";
-                this.usuario.email="";
-                this.usuario.celular="";
-            },                        
-            editar: function(){
-            let parametros = {descripcion:this.articulo.descripcion, precio:this.articulo.precio, stock:this.articulo.stock, id:this.articulo.id};                            
-            //console.log(parametros);                   
-                 axios.put(url+this.articulo.id, parametros)                            
-                  .then(response => {                                
-                     this.mostrar();
-                  })                
-                  .catch(error => {
-                      console.log(error);            
-                  });
-            },
-            borrar:function(id){
-             Swal.fire({
-                title: '¿Confirma eliminar el registro?',   
-                confirmButtonText: `Confirmar`,                  
-                showCancelButton: true,                          
-              }).then((result) => {                
-                if (result.isConfirmed) {      
-                      //procedimiento borrar
-                      axios.delete(url+id)
-                      .then(response =>{           
-                          this.mostrar();
-                       });      
-                      Swal.fire('¡Eliminado!', '', 'success')
-                } else if (result.isDenied) {                  
-                }
-              });              
-            },
-
-            //Botones y formularios
-            guardar:function(){
-              if(this.operacion=='crear'){
-                this.crear();                
-              }
-              if(this.operacion=='editar'){ 
-                this.editar();                           
-              }
-              this.dialog=false;                        
-            }, 
-            formNuevo:function () {
-              this.dialog=true;
-              this.operacion='crear';
-              this.articulo.descripcion='';                           
-              this.articulo.precio='';
-              this.articulo.stock='';
-            },
-            formEditar:function(id, descripcion, precio, stock){              
-              this.articulo.id = id;
-              this.articulo.descripcion = descripcion;                            
-              this.articulo.precio = precio;
-              this.articulo.stock = stock;                      
-              this.dialog=true;                            
-              this.operacion='editar';
-            }
-       }      
-    });
-    </script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/adminlte.js"></script>
+    <script src="js/main.js"></script>
 </body>
+
 </html>

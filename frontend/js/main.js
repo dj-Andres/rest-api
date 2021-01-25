@@ -10,7 +10,6 @@ const getAll = async ()=>{
         let res = await fetch('http://localhost:3050/usuario'),
         data= await res.json();
         if(!res.ok) throw { status: res.status,statusText: res.statusText };
-        //console.log(data);
         table(data);
 
     } catch (err) {
@@ -24,14 +23,13 @@ const table = (data) =>{
     let elementos ='';
     
     for (let item of data ){
-        //console.log(item);
         elementos+=`
             <div usuarioid="${item.id}" class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">
                             <div class="card bg-light">
                                 <div class="card-header text-muted border-bottom-0">
                                     <font style="vertical-align: inherit;">
                                         <font style="vertical-align: inherit;">
-                                            <h1 class="badge badge-success">Datos del Usuario</h1>
+                                            Billetera electronica
                                         </font>
                                     </font>
                                 </div>
@@ -40,7 +38,7 @@ const table = (data) =>{
                                         <div class="col-7">
                                             <p class="text-muted text-sm"><b>
                                                     <font style="vertical-align: inherit;">
-                                                        <font style="vertical-align: inherit;">Acerca de:</font>
+                                                        <font style="vertical-align: inherit;">Datos del Usuario:</font>
                                                     </font>
                                                 </b>
                                                 <font style="vertical-align: inherit;">
@@ -72,11 +70,14 @@ const table = (data) =>{
                                         </div>
                                         <div class="card-footer">
                                             <div class="text-right">
-                                                <button class="subir btn btn-success ml-1" type="button" data-toggle="modal" data-target="#recarga">
-                                                    <i class="fas fa-angle-double-up mr-1"></i>Ascender
+                                                <button class="subir btn btn-success ml-1" type="button" data-toggle="modal" data-target="#recarga" title="Recarga de Saldo">
+                                                    <i class="fas fa-plus-circle mr-1"></i>
                                                 </button>
-                                                <button class="btn btn-warning ml-1" type="button" data-toggle="modal" data-target="#saldo">
-                                                    <i class="fas fa-angle-double-up mr-1"></i>Saldo
+                                                <button class="btn btn-info ml-1" type="button" data-toggle="modal" data-target="#saldo" title="Consultar Saldo">
+                                                    <i class="far fa-money-bill-alt mr-1"></i>
+                                                </button>
+                                                <button class="btn btn-primary ml-1" type="button" data-toggle="modal" data-target="#compra" title="Verificación Compra">
+                                                    <i class="fas fa-store mr-1"></i>
                                                 </button>
                                             </div>
                                         </div>
@@ -92,35 +93,29 @@ const table = (data) =>{
 
 const formulario = document.getElementById('formulario');
 const mensajesFormulario = document.getElementById('mensaje');
-document.addEventListener('submit',async e=>{
-    //console.log(formulario);
-    if(e.target===formulario){
+document.addEventListener('submit', async e => {
+    if (e.target === formulario) {
         e.preventDefault();
-
-        if(e.target.documento.value  == '' || e.target.nombres.value || e.target.email.value  || e.target.celular.value){
-            mensajesFormulario.style.display='flex';
-        }else{
-            try {
-                let res = await fetch('http://localhost:3050/add',{
-                    method:"POST",
-                    headers:{
-                        "Content-Type":"application/json; charset=utf-8"
-                    },
-                    body:JSON.stringify({
-                        documento:e.target.documento.value,
-                        nombres:e.target.nombres.value,
-                        email:e.target.email.value,
-                        celular:e.target.celular.value
-                    })
-                }),
-                json= await res.json();
-                if(!res.ok) throw { status: res.status,statusText: res.statusText };
-                console.log(json);
-                getAll();
-            } catch (err) {
-                let message = err.statusText ||"Ocurrio un error";
-                console.log(err);         
-            }   
+        try {
+            let res = await fetch('http://localhost:3050/add', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8"
+                },
+                body: JSON.stringify({
+                    documento: e.target.documento.value,
+                    nombres: e.target.nombres.value,
+                    email: e.target.email.value,
+                    celular: e.target.celular.value
+                })
+            }),
+                json = await res.json();
+            if (!res.ok) throw { status: res.status, statusText: res.statusText };
+            console.log(json);
+            getAll();
+        } catch (err) {
+            let message = err.statusText || "Ocurrio un error";
+            console.log(err);
         }
     }
 });
@@ -189,7 +184,6 @@ saldo.addEventListener('submit',async(e)=>{
             json= await res.json();
             if(!res.ok) throw { status: res.status,statusText: res.statusText };
             console.log(json);
-            //getAll();
         } catch (err) {
             let message = err.statusText ||"Ocurrio un error";
             console.log(err);         

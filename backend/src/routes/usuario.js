@@ -133,10 +133,6 @@ route.post('/compra',(req, res) => {
     }
   });
 
-  /*transporter.verify().then(()=>{
-    console.log('Envio de eamil');
-  });*/
-
   const info = transporter.sendMail({
     from: "'Pagos Online'<diegoandresjimenezponce96jp@gmail.com>",
     to: email,
