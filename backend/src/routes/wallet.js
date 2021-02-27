@@ -1,5 +1,14 @@
+const express = require('express');
+const router = express.Router();
+const Wallet = require('../controllers/wallet.controller');
+
+router.post('/',Wallet.newRecharge);
+
+module.exports = router;
+
+
 //Wallet//
-route.post('/recharge',(req,res)=>{
+/*route.post('/recharge',(req,res)=>{
     const sql = 'INSERT INTO wallet SET ?';
     const walletObj = {
       documento: req.body.documento,
@@ -22,7 +31,7 @@ route.post('/compra',(req, res) => {
   /*const token_compra = token();
   const id_session = Id();*/
 
-  const contenido = `
+  /*const contenido = `
         <h1>Verificación de Pago</h1>
         <ul>
           <li>Valor de la Compra es: </li>
@@ -65,4 +74,4 @@ route.get('/saldo/:documento/:celular',(req,res)=>{
     }
   });
 
-});
+});*/

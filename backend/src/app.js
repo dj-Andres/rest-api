@@ -1,6 +1,7 @@
 const express = require("express");
 const database = require("./database");
 const userRoutes = require("./routes/usuario");
+const walletRoutes = require("./routes/wallet");
 const cors = require("cors");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
@@ -20,13 +21,12 @@ app.get("/", (rep, res) => {
 });
 
 app.use("/api/users", userRoutes);
+app.use("/api/wallet",walletRoutes);
 
 app.use((req,res)=>{
     res.status(404).json({
       message:"Pagina no encontrada"
     })
 })
-
-
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

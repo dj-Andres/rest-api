@@ -11,6 +11,13 @@ const Schema = joi.object({
   celular: joi.required(),
 });
 
+const SchemaWallet = joi.object({
+  documento: joi.string().max(10).required(),
+  celular: joi.required(),
+  valor:joi.number().required()
+})
+
 module.exports = {
   Schema,
+  SchemaWallet
 };
