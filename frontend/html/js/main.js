@@ -7,10 +7,11 @@ document.addEventListener("DOMContentLoaded",function(){
 
 const getAll = async ()=>{
     try {
-        let res = await fetch('http://localhost:3050/usuario'),
+        let res = await fetch('http://localhost:3050/api/users'),
         data= await res.json();
         if(!res.ok) throw { status: res.status,statusText: res.statusText };
         table(data);
+
 
     } catch (err) {
         let message = err.statusText ||"Ocurrio un error";

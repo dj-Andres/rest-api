@@ -6,13 +6,8 @@ router.post("/", Wallet.newRecharge);
 
 router.get("/:documento/:celular", Wallet.check);
 
-router.post("/buy",Wallet.parchace);
+router.post("/buy", Wallet.parchace);
+
+router.get("conformarPago/:sessionCompra", Wallet.confirmeBuy);
 
 module.exports = router;
-
-
-/*route.get('/verificar-pago/:id_session/:token',(req,res)=>{
-    const { id_session } = req.params;
-    const { token } = req.params;
-});
-});*/

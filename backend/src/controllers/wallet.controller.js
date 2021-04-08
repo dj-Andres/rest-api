@@ -50,7 +50,6 @@ Wallets.parchace = async (req, res) => {
   const { email } = req.body;
 
   try {
-
     emailer.sendMail(email);
 
     await console.log(email);
@@ -60,7 +59,36 @@ Wallets.parchace = async (req, res) => {
       message:
         "Por favor revisar su bandeja de correo electronico para verificar su compra",
     });
+  } catch (err) {
+    console.log(err);
+  }
+};
 
+Wallets.confirmeBuy = async (req, res) => {
+  const { sessionCompra } = req.params;
+
+  const valor = 10;
+
+  const id = 9;
+
+  try {
+    console.log(sessionCompra);
+
+    await Wallet.updateStore(valor, id, (err, confirm) => {
+      if (err) {
+        res.status(400).json({
+          succes: 0,
+          message: "La compra se ha podido realizar correctamente",
+          data: err,
+        });
+      } else {
+        res.status(200).json({
+          succes: 0,
+          message: "La compra se ha realizado de manera correcta",
+          data: confirm,
+        });
+      }
+    });
   } catch (err) {
     console.log(err);
   }

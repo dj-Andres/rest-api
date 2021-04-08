@@ -20,3 +20,6 @@ Content-Type: application/json
 {
     "email":"diego96jp@gmail.com"
 }
+
+### Actualizar el monto de la billetera;
+GET  http://localhost:3050/api/wallet/conformarPago/af44b665e5104d5aa72691458fa56bb2

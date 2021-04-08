@@ -22,7 +22,6 @@ const generateUUID = ()  => {
 
 const IdCompra = generateUUID();
 
-console.log(IdCompra);
 
 module.exports = {
  tokenGenerate,
