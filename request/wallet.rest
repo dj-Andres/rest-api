@@ -1,0 +1,22 @@
+### Nueva recarga de saldo;
+POST http://localhost:3050/api/wallet
+
+Content-Type: application/json
+
+{
+    "documento" :"0707012705", 
+    "celular":"0992294342",
+    "valor":"12"
+}
+
+### Consultar saldo disponible de la cartera;
+
+GET http://localhost:3050/api/wallet/0707012500/123456
+
+### Realizar compra;
+POST http://localhost:3050/api/wallet/buy
+Content-Type: application/json
+
+{
+    "email":"diego96jp@gmail.com"
+}

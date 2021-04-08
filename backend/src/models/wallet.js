@@ -6,24 +6,13 @@ const Wallet= function(wallet){
     this.valor=wallet.valor;
 }
 
-Wallet.getAllWallets=(result)=>{
-    sql.query("SELECT * FROM usuario",(err,res)=>{
+Wallet.checkBalance=(documento,celular,result)=>{
+    sql.query("SELECT  valor FROM wallet WHERE documento = ? AND celular = ?",documento,celular,(err,res)=>{
         if(err){
             console.log("error",err);
             result(err,null);
         }else{
             console.log("data",res);
-            result(null,res);
-        }
-    });
-}
-
-Wallet.getWalletbyId= (WalletId,result)=>{
-    sql.query("SELECT * FROM usuario WHERE id = ?",WalletId,(err,res)=>{
-        if(err){
-            console.log("error: ", err);
-            result(err, null);
-        }else{
             result(null,res);
         }
     });

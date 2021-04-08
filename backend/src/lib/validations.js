@@ -12,7 +12,7 @@ const Schema = joi.object({
 });
 
 const SchemaWallet = joi.object({
-  documento: joi.string().max(10).required(),
+  documento: joi.string().required(),
   celular: joi.required(),
   valor:joi.number().required()
 })

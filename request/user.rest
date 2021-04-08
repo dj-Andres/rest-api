@@ -1,0 +1,34 @@
+###  Obtener todos los registros de los usuarios;
+
+GET  http://localhost:3050/api/users
+
+###  Obtener el usuario por ID;
+
+GET  http://localhost:3050/api/users/32
+
+### Registrar un nuevo usuario;
+POST  http://localhost:3050/api/users
+Content-Type: application/json
+
+{
+    "documento":"0707030501",
+    "nombres":"Rosa MAria Arizaga Perez",
+    "email":"Rosa_arizaga@gmail.com",
+    "celular":"1234567891"
+}
+
+### Modificar información del Usuario;
+PUT http://localhost:3050/api/users/32
+Content-Type: application/json
+
+{
+    "documento":"0707030501",
+    "nombres":"Rosa MAria Arizaga Perez",
+    "email":"Rosa_arizaga99@gmail.com",
+    "celular":"1234567899"
+}
+
+### Eliminar el usuario;
+DELETE  http://localhost:3050/api/users/32
+
+
