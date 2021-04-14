@@ -1,8 +1,14 @@
-import React, { Fragment } from "react";
+import React, { Fragment,useState } from "react";
 import Card from "./Card";
-
+import ModalUsuario from "./ModalUsuario";
 
 const Contend = () => {
+  const [isOpenModal, setIsOpenModal] = useState(false);
+
+  const openModal = () =>{
+    setIsOpenModal(true);
+  }
+
   return (
     <Fragment>
       <section>
@@ -16,13 +22,15 @@ const Contend = () => {
                   data-toggle="modal"
                   data-target="#crear-usuario"
                   className="btn btn-block btn-success ml-2 py-2 mt-2"
+                  onClick={openModal}
                 >
                   Crear Usuario
                 </button>
+                <ModalUsuario isOpen={isOpenModal} />
               </div>
             </div>
             <div className="card-body">
-               <Card />
+              <Card />
             </div>
           </div>
         </div>
