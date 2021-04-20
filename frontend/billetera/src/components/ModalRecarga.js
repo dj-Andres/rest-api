@@ -4,45 +4,40 @@ import { helpHttp } from "./../helpers/helpHttp";
 
 const initialForm = {
   documento: "",
-  nombres: "",
   celular: "",
-  email: "",
+  saldo: "",
 };
 
-const ModalUsuario = ({ isOpen }) => {
+const ModalRecarga = ({ isOpenModalRecarga }) => {
   const [form, setForm] = useState(initialForm);
-  const url = "http://localhost:3050/api/users";
   let api = helpHttp();
-
-  const hundleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
-  };
+  let url = "http://localhost:3050/api/wallet";
 
   const hundleSubmit = (e) => {
     e.preventDefault();
-    if(!form.documento || !form.nombres || !form.celular || !form.email){
-      alert("Nose permiten campos vacios");
-    }else{
-      createUser();
+    if (!form.documento || !form.celular || !form.saldo) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Se debe llenar todos los campos",
+      });
+    } else {
+      newRecharge();
     }
   };
 
-  const createUser = async () =>{
+  const newRecharge = async () => {
     let options = {
-      body:{
-        documento:form.documento,
-        nombres:form.documento,
-        email:form.email,
-        celular:form.celular
+      body: {
+        documento: form.documento,
+        celular: form.celular,
+        valor: form.saldo,
       },
-      headers:{"Content-Type": "application/json"}
+      headers: { "Content-Type": "application/json" },
     };
 
-    await api.post(url,options).then((res)=>{
-      if(!res.err){
+    await api.post(url, options).then((res) => {
+      if (!res.err) {
         Swal.fire({
           position: "center",
           icon: "success",
@@ -51,7 +46,7 @@ const ModalUsuario = ({ isOpen }) => {
           timer: 3500,
         });
         hundleReset();
-      }else{
+      } else {
         Swal.fire({
           position: "center",
           icon: "error",
@@ -60,17 +55,24 @@ const ModalUsuario = ({ isOpen }) => {
           timer: 3500,
         });
       }
-    })
-  }
+    });
+  };
 
-  const hundleReset = (e) => {
+  const hundleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const hundleReset = () => {
     setForm(initialForm);
   };
 
   return (
     <div
       className="modal fade"
-      id="crear-usuario"
+      id="recarga"
       role="dialog"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
@@ -79,7 +81,7 @@ const ModalUsuario = ({ isOpen }) => {
         <div className="modal-content">
           <div className="card card-success">
             <div className="card-header">
-              <h3 className="card-title">Crear Usuario</h3>
+              <h3 className="card-title">Recargar Saldo</h3>
               <button className="close" data-dismiss="modal" aria-label="close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -108,7 +110,9 @@ const ModalUsuario = ({ isOpen }) => {
 
               <form onSubmit={hundleSubmit}>
                 <div className="form-group">
-                  <label htmlFor="documento">Documento</label>
+                  <label htmlFor="documento" className="text-right">
+                    Documento
+                  </label>
                   <input
                     type="text"
                     name="documento"
@@ -119,25 +123,14 @@ const ModalUsuario = ({ isOpen }) => {
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="nombres">Nombres</label>
+                  <label htmlFor="saldo">Valor de Recarga</label>
                   <input
-                    type="text"
-                    name="nombres"
+                    type="number"
+                    name="saldo"
                     className="form-control"
                     onChange={hundleChange}
-                    value={form.nombres}
-                    placeholder="Nombres"
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="email">Email</label>
-                  <input
-                    type="email"
-                    name="email"
-                    className="form-control"
-                    onChange={hundleChange}
-                    value={form.email}
-                    placeholder="Email"
+                    value={form.saldo}
+                    placeholder="Valor de Recarga"
                   />
                 </div>
                 <div className="form-group">
@@ -173,4 +166,4 @@ const ModalUsuario = ({ isOpen }) => {
   );
 };
 
-export default ModalUsuario;
+export default ModalRecarga;

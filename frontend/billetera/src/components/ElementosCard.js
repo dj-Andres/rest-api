@@ -1,6 +1,13 @@
-import React, { Fragment } from "react";
+import React, { Fragment,useState } from "react";
+import ModalRecarga from "./ModalRecarga";
 
 const ElementosCard = ({ user }) => {
+  const [isOpenModalRecarga, setIsOpenModalRecarga] = useState(false);
+
+  const openModalRecarga = () =>{
+    setIsOpenModalRecarga(true);
+  }
+
   return (
     <Fragment>
       {user.map((el) => (
@@ -49,9 +56,11 @@ const ElementosCard = ({ user }) => {
                   data-toggle="modal"
                   data-target="#recarga"
                   title="Recarga de Saldo"
+                  onClick={openModalRecarga}
                 >
                   <i className="fas fa-plus-circle mr-1"></i>
                 </button>
+                <ModalRecarga isOpenModalRecarga={isOpenModalRecarga} />
                 <button
                   className="btn btn-warning ml-1"
                   type="button"

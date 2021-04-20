@@ -1,7 +1,7 @@
 const joi = require("@hapi/joi");
 const Schema = joi.object({
   documento: joi.string().max(10).required(),
-  nombres: joi.string().min(20).max(60).required(),
+  nombres: joi.string().required(),
   email: joi
     .string()
     .min(8)
