@@ -31,4 +31,7 @@ Content-Type: application/json
 ### Eliminar el usuario;
 DELETE  http://localhost:3050/api/users/32
 
+###
+GET  http://localhost:1565/api/productos
+
 
