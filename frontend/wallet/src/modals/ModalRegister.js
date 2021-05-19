@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState,useEffect} from "react";
 
 const InitialForm = {
   documento: "",
@@ -7,8 +7,16 @@ const InitialForm = {
   email: "",
 };
 
-const ModalRegister = ({ isOpen, close, createClient }) => {
+const ModalRegister = ({ isOpen, close, createClient,dataToEdit, setDataToEdit }) => {
   const [form, setForm] = useState(InitialForm);
+
+  useEffect(() => {
+    if (dataToEdit) {
+      setForm(dataToEdit);
+    } else {
+      setForm(InitialForm);
+    }
+  }, [dataToEdit]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -30,6 +38,7 @@ const ModalRegister = ({ isOpen, close, createClient }) => {
 
   const handleReset = (e) =>{
     setForm(InitialForm);
+    setDataToEdit(null);
   }
 
   return (
@@ -109,10 +118,10 @@ const ModalRegister = ({ isOpen, close, createClient }) => {
                   data-bs-dismiss="modal"
                   onClick={close}
                 >
-                  Close
+                  Cerrar
                 </button>
                 <button type="submit" className="btn btn-primary">
-                  Save changes
+                  Guardar Cliente
                 </button>
               </div>
             </form>

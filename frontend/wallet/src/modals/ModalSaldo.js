@@ -1,21 +1,16 @@
 import { useState } from "react";
 
-const InitialForm = {
-  documento: "",
-  celular: "",
-  valor: "",
-};
-
-const ModalRecarga = ({ isOpen, close, data, rechargeWallet }) => {
+const ModalSaldo = ({ isOpen, close, getSaldo ,data}) => {
   const [form, setForm] = useState(data);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!form.documento || !form.celular || !form.valor) {
+    if (!form.documento || !form.celular) {
       alert("No se permite datos vacios");
     } else {
-      rechargeWallet(form);
-      handleReset();      
+      getSaldo(form);
+      //handleReset();
+      close();
     }
   };
 
@@ -26,14 +21,14 @@ const ModalRecarga = ({ isOpen, close, data, rechargeWallet }) => {
     });
   };
 
-  const handleReset = (e) => {
-    setForm(InitialForm);
-  };
+  //const handleReset = (e) =>{
+    //setForm(InitialForm);
+  //}
 
   return (
     <div
       className="modal fade"
-      id="recarga"
+      id="consultar-saldo"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
@@ -41,7 +36,7 @@ const ModalRecarga = ({ isOpen, close, data, rechargeWallet }) => {
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title" id="exampleModalLabel">
-              Recarga de la Billetera
+              Consultar Saldo
             </h5>
             <button
               type="button"
@@ -76,18 +71,6 @@ const ModalRecarga = ({ isOpen, close, data, rechargeWallet }) => {
                   value={form.celular}
                 />
               </div>
-              <div className="form-control mt-2">
-                <label htmlFor="valor" className="form-label">
-                  Saldo
-                </label>
-                <input
-                  type="number"
-                  className="form-control"
-                  name="valor"
-                  onChange={handleChange}
-                  value={form.valor}
-                />
-              </div>
               <div className="form-group mt-2 text-end">
                 <button
                   type="button"
@@ -98,7 +81,7 @@ const ModalRecarga = ({ isOpen, close, data, rechargeWallet }) => {
                   Cerrar
                 </button>
                 <button type="submit" className="btn btn-primary">
-                  Recargar
+                  Consultar
                 </button>
               </div>
             </form>
@@ -109,4 +92,5 @@ const ModalRecarga = ({ isOpen, close, data, rechargeWallet }) => {
   );
 };
 
-export default ModalRecarga;
+export default ModalSaldo;
+

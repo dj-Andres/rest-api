@@ -4,7 +4,7 @@ GET  http://localhost:3050/api/users
 
 ###  Obtener el usuario por ID;
 
-GET  http://localhost:3050/api/users/32
+GET  http://localhost:3050/api/users/41
 
 ### Registrar un nuevo usuario;
 POST  http://localhost:3050/api/users
@@ -32,6 +32,6 @@ Content-Type: application/json
 DELETE  http://localhost:3050/api/users/32
 
 ###
-GET  http://localhost:1565/api/productos
+GET  https://localhost:44359/services/stores/2
 
 

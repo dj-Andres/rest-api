@@ -6,18 +6,17 @@ import CardContend from "./CardContend";
 import Loader from "./Loader";
 
 const Contend = () => {
-  const [dato, setDato] = useState("");
+  const [dato, setDato] = useState(null);
+  const [dataToEdit, setDataToEdit] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const [
-    isOpenModalRegister,
-    openModalRegister,
-    closeModalRegister,
-  ] = useModal();
+  const [isOpenModalRegister, openModalRegister, closeModalRegister] =
+    useModal();
 
   let api = helpHttp();
   let url = "http://localhost:3050/api/users";
-  let urlWallet = "POST http://localhost:3050/api/wallet"
+  let urlWallet = "http://localhost:3050/api/wallet";
+  let urlSaldo = "http://localhost:3050/api/wallet";
 
   useEffect(() => {
     setLoading(true);
@@ -33,6 +32,17 @@ const Contend = () => {
       });
   }, [url]);
 
+  const getSaldo = (data) => {
+    api.get(`${urlSaldo}/${data.documento}/${data.celular}`).then((res) => {
+      if (!res.err) {
+        setDato(res.data);
+        console.log(res.data);
+      } else {
+        setDato("");
+      }
+    });
+  };
+
   const createClient = (data) => {
     let options = {
       body: data,
@@ -47,20 +57,20 @@ const Contend = () => {
     });
   };
 
-  const rechargeWallet = (data) =>{
-    /*let options = {
-      body:data,
-      headers:{"Content-Type": "application/json"}
-    };*/
-    //api.post(urlWallet,options).then((res)=>{
-      //if(!res.err){
-         dato.map((el) => (el.id === data.id));
-        //setDato(recargaNew);
-      /*}else{
-        console.log(res)
+  const rechargeWallet = (data) => {
+    let options = {
+      body: data,
+      headers: { "Content-Type": "application/json" },
+    };
+    api.post(urlWallet, options).then((res) => {
+      if (!res.err) {
+        setDato(res.data);
+        console.log(res.data);
+      } else {
+        console.log(res);
       }
-    })*/
-  }
+    });
+  };
 
   return (
     <section>
@@ -83,13 +93,23 @@ const Contend = () => {
         </div>
         <div className="card-body">
           {loading && <Loader />}
-          {dato && <CardContend data={dato} rechargeWallet={rechargeWallet} />}
+          {dato && (
+            <CardContend
+              data={dato}
+              rechargeWallet={rechargeWallet}
+              getSaldo={getSaldo}
+              dataToEdit={dataToEdit}
+              setDataToEdit={setDataToEdit}
+            />
+          )}
         </div>
       </div>
       <ModalRegister
         isOpen={isOpenModalRegister}
         close={closeModalRegister}
         createClient={createClient}
+        dataToEdit={dataToEdit}
+        setDataToEdit={setDataToEdit}
       />
     </section>
   );
