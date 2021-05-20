@@ -1,10 +1,12 @@
 import ElementCard from "./ElementCard";
+
 const CardContend = ({
   data,
   rechargeWallet,
   getSaldo,
   dataToEdit,
-  setDataToEdit
+  setDataToEdit,
+  confirmPurchase
 }) => {
   return (
     <div className="row">
@@ -31,6 +33,7 @@ const CardContend = ({
                     getSaldo={getSaldo}
                     dataToEdit={dataToEdit}
                     setDataToEdit={setDataToEdit}
+                    confirmPurchase={confirmPurchase}
                   />
                 ))
               ) : (

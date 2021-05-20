@@ -8,6 +8,6 @@ router.get("/:documento/:celular", Wallet.check);
 
 router.post("/buy", Wallet.parchace);
 
-router.get("conformarPago/:sessionCompra", Wallet.confirmeBuy);
+router.get("/confirmarPago/:sessionCompra", Wallet.confirmeBuy);
 
 module.exports = router;

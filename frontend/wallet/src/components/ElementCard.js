@@ -1,10 +1,13 @@
+import ModalCompra from "../modals/ModalCompra";
 import ModalRecarga from "../modals/ModalRecarga";
 import ModalSaldo from "../modals/ModalSaldo";
 import useModal from "./../hooks/useModal";
 
-const ElementCard = ({ el, rechargeWallet,getSaldo }) => {
+const ElementCard = ({ el, rechargeWallet,getSaldo,confirmPurchase,setDataToEdit }) => {
   const [isOpenModalRecarga, openModalRecarga, closeModalRecarga] = useModal();
   const [isOpenModalSaldo, openModalSaldo, closeModalSaldo] = useModal();
+  const [isOpenModalCompra, openModalCompra, closeModalCompra] = useModal();
+
   return (
     <tr>
       <th scope="row">{el.id}</th>
@@ -28,11 +31,12 @@ const ElementCard = ({ el, rechargeWallet,getSaldo }) => {
           rechargeWallet={rechargeWallet}
           isOpen={isOpenModalRecarga}
           close={closeModalRecarga}
+          setDataToEdit={setDataToEdit(el)}
         />
       </td>
       <td style = {{width:'10px'}}>
         <button
-          className="btn btn-warning"
+          className="btn btn-info"
           type="button"
           data-bs-toggle="modal"
           data-bs-target="#consultar-saldo"
@@ -46,6 +50,24 @@ const ElementCard = ({ el, rechargeWallet,getSaldo }) => {
           getSaldo={getSaldo}
           isOpen={isOpenModalSaldo}
           close={closeModalSaldo}
+        />
+      </td>
+      <td style={{width:'10px'}}>
+        <button
+            className="btn btn-primary"
+            type="button"
+            data-bs-toggle="modal"
+            data-bs-target="#confirmar-compra"
+            title="Confirmar Compra"
+            onClick={openModalCompra}
+          >
+            Compra
+        </button>
+        <ModalCompra 
+            data={el}
+            confirmPurchase={confirmPurchase}
+            isOpen={isOpenModalCompra}
+            close={closeModalCompra}
         />
       </td>
     </tr>

@@ -1,4 +1,4 @@
-import React, { useState,useEffect} from "react";
+import React, { useState} from "react";
 
 const InitialForm = {
   documento: "",
@@ -7,16 +7,8 @@ const InitialForm = {
   email: "",
 };
 
-const ModalRegister = ({ isOpen, close, createClient,dataToEdit, setDataToEdit }) => {
+const ModalRegister = ({ isOpen, close, createClient }) => {
   const [form, setForm] = useState(InitialForm);
-
-  useEffect(() => {
-    if (dataToEdit) {
-      setForm(dataToEdit);
-    } else {
-      setForm(InitialForm);
-    }
-  }, [dataToEdit]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -38,7 +30,6 @@ const ModalRegister = ({ isOpen, close, createClient,dataToEdit, setDataToEdit }
 
   const handleReset = (e) =>{
     setForm(InitialForm);
-    setDataToEdit(null);
   }
 
   return (

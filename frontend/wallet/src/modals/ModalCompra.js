@@ -1,20 +1,19 @@
 import { useState } from "react";
 
-const InitialForm = {
-  documento: "",
-  celular: "",
-  valor: "",
+const initialForm = {
+  email: "",
 };
 
-const ModalRecarga = ({ isOpen, close, data, rechargeWallet,setDataToEdit }) => {
+const ModalCompra = ({ isOpen,close, data, confirmPurchase }) => {
   const [form, setForm] = useState(data);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!form.documento || !form.celular || !form.valor) {
-      alert("No se permite datos vacios");
+    if (!form.email) {
+      alert("No se permiten campos vacios");
     } else {
-      rechargeWallet(form);
-      handleReset();      
+      confirmPurchase(form);
+      handleReset();
     }
   };
 
@@ -25,14 +24,14 @@ const ModalRecarga = ({ isOpen, close, data, rechargeWallet,setDataToEdit }) => 
     });
   };
 
-  const handleReset = (e) => {
-    setForm(InitialForm);
+  const handleReset = () => {
+    setForm(initialForm);
   };
 
   return (
     <div
       className="modal fade"
-      id="recarga"
+      id="confirmar-compra"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
@@ -40,7 +39,7 @@ const ModalRecarga = ({ isOpen, close, data, rechargeWallet,setDataToEdit }) => 
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title" id="exampleModalLabel">
-              Recarga de la Billetera
+              Confirmar Compra
             </h5>
             <button
               type="button"
@@ -51,40 +50,16 @@ const ModalRecarga = ({ isOpen, close, data, rechargeWallet,setDataToEdit }) => 
           </div>
           <div className="modal-body">
             <form onSubmit={handleSubmit}>
-              <div className="form-control">
-                <label htmlFor="documento" className="form-label">
-                  Documento
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="documento"
-                  onChange={handleChange}
-                  value={form.documento}
-                />
-              </div>
               <div className="form-control mt-2">
-                <label htmlFor="celular" className="form-label">
-                  Celular
+                <label htmlFor="email" className="form-label">
+                  Email
                 </label>
                 <input
-                  type="text"
+                  type="email"
                   className="form-control"
-                  name="celular"
+                  name="email"
                   onChange={handleChange}
-                  value={form.celular}
-                />
-              </div>
-              <div className="form-control mt-2">
-                <label htmlFor="valor" className="form-label">
-                  Saldo
-                </label>
-                <input
-                  type="number"
-                  className="form-control"
-                  name="valor"
-                  onChange={handleChange}
-                  value={form.valor}
+                  value={form.email}
                 />
               </div>
               <div className="form-group mt-2 text-end">
@@ -97,7 +72,7 @@ const ModalRecarga = ({ isOpen, close, data, rechargeWallet,setDataToEdit }) => 
                   Cerrar
                 </button>
                 <button type="submit" className="btn btn-primary">
-                  Recargar
+                  Confirmar Compra
                 </button>
               </div>
             </form>
@@ -108,4 +83,4 @@ const ModalRecarga = ({ isOpen, close, data, rechargeWallet,setDataToEdit }) => 
   );
 };
 
-export default ModalRecarga;
+export default ModalCompra;

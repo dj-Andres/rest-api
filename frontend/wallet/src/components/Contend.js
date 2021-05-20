@@ -4,12 +4,14 @@ import useModal from "./../hooks/useModal";
 import { helpHttp } from "./../helpers/helpHttp";
 import CardContend from "./CardContend";
 import Loader from "./Loader";
+import Mensaje from "./Mensaje";
+
 
 const Contend = () => {
   const [dato, setDato] = useState(null);
   const [dataToEdit, setDataToEdit] = useState(null);
+  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-
   const [isOpenModalRegister, openModalRegister, closeModalRegister] =
     useModal();
 
@@ -17,6 +19,7 @@ const Contend = () => {
   let url = "http://localhost:3050/api/users";
   let urlWallet = "http://localhost:3050/api/wallet";
   let urlSaldo = "http://localhost:3050/api/wallet";
+  let urlCompra = "http://localhost:3050/api/wallet/buy";
 
   useEffect(() => {
     setLoading(true);
@@ -25,8 +28,10 @@ const Contend = () => {
       .then((res) => {
         if (!res.err) {
           setDato(res.data);
+          setError(null);
         } else {
           setDato(null);
+          setError(res.data);
         }
         setLoading(false);
       });
@@ -51,6 +56,21 @@ const Contend = () => {
     api.post(url, options).then((res) => {
       if (!res.err) {
         setDato([...dato, res]);
+      } else {
+        console.log(res);
+      }
+    });
+  };
+
+  const confirmPurchase = (data) => {
+    let options = {
+      body: data,
+      headers: { "Content-Type": "application/json" },
+    };
+    api.post(urlCompra, options).then((res) => {
+      if (!res.err) {
+        setDato([...dato, res]);
+        console.log(res.data);
       } else {
         console.log(res);
       }
@@ -93,6 +113,7 @@ const Contend = () => {
         </div>
         <div className="card-body">
           {loading && <Loader />}
+          {error && <Mensaje msg={`Error ${error.status}:${error.statusText}`} bgColor="#dc3545" />}
           {dato && (
             <CardContend
               data={dato}
@@ -100,6 +121,7 @@ const Contend = () => {
               getSaldo={getSaldo}
               dataToEdit={dataToEdit}
               setDataToEdit={setDataToEdit}
+              confirmPurchase={confirmPurchase}
             />
           )}
         </div>
@@ -108,8 +130,6 @@ const Contend = () => {
         isOpen={isOpenModalRegister}
         close={closeModalRegister}
         createClient={createClient}
-        dataToEdit={dataToEdit}
-        setDataToEdit={setDataToEdit}
       />
     </section>
   );

@@ -10,7 +10,7 @@ const contenido = `
         <ul>
           <li>Valor de la Compra es: </li>
         </ul>
-        <a href="http://localhost:3050/api/wallet/conformarPago/${sessionCompra}">Verificar Compra</a>
+        <a href="http://localhost:3050/api/wallet/confirmarPago/${sessionCompra}">Verificar Compra</a>
         <p>Su token de Validación de la compra es la siguiente : ${tokenCompra}</p>
       `;
 
